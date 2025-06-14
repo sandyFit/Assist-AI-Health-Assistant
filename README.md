@@ -52,13 +52,13 @@ It’s designed for fast prototyping (e.g., hackathons!) with no complex medical
 
 1. Start the backend API:
    ```
-   uvicorn app.main:app --reload
+   streamlit run app/main.py
    ```
    The API will be available at http://localhost:8000
 
 2. Launch the Streamlit UI in a separate terminal:
    ```
-   streamlit run ui/streamlit_app.py
+   streamlit run ui/frontend.py
    ```
    The UI will be available at http://localhost:8501
 
