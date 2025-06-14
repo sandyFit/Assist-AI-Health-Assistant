@@ -1,0 +1,90 @@
+PATIENT MEDICAL HISTORY
+
+Name: [REDACTED]
+DOB: [REDACTED]
+Date of Record: 2023-05-15
+
+CHIEF COMPLAINT:
+Patient presents with concerns about recurring headaches and occasional dizziness for the past 3 months.
+
+HISTORY OF PRESENT ILLNESS:
+Patient reports experiencing headaches 3-4 times per week, typically in the morning. Describes pain as "throbbing" and primarily located in the frontal and temporal regions. Pain severity ranges from 4-7/10. Headaches last approximately 2-4 hours and are sometimes accompanied by mild nausea and sensitivity to light. Patient has been self-medicating with over-the-counter ibuprofen with partial relief. Dizziness occurs intermittently, described as a "lightheaded" sensation, particularly when standing up quickly. No loss of consciousness reported.
+
+PAST MEDICAL HISTORY:
+- Hypertension (diagnosed 2018)
+- Hyperlipidemia (diagnosed 2019)
+- Seasonal allergies
+
+SURGICAL HISTORY:
+- Appendectomy (2005)
+- Wisdom teeth extraction (2001)
+
+FAMILY HISTORY:
+- Father: Hypertension, Type 2 Diabetes, died age 72 (myocardial infarction)
+- Mother: Migraine headaches, Osteoporosis, alive age 68
+- Brother: Hypertension
+
+SOCIAL HISTORY:
+- Occupation: Office worker (computer use 8+ hours daily)
+- Exercise: Walks 30 minutes, 2-3 times weekly
+- Tobacco: Never smoker
+- Alcohol: Social drinker (2-3 drinks weekly)
+- Caffeine: 2-3 cups of coffee daily
+
+CURRENT MEDICATIONS:
+- Lisinopril 10mg daily
+- Atorvastatin 20mg daily
+- Loratadine 10mg as needed for allergies
+- Ibuprofen 400mg as needed for headaches
+
+ALLERGIES:
+- Penicillin (rash)
+- Pollen (seasonal rhinitis)
+
+REVIEW OF SYSTEMS:
+- Constitutional: Denies fever, chills, or unexplained weight changes
+- HEENT: Headaches as described, no visual changes, no hearing changes
+- Cardiovascular: No chest pain, no palpitations
+- Respiratory: No shortness of breath, no cough
+- Gastrointestinal: Occasional nausea with headaches, no vomiting, normal bowel movements
+- Musculoskeletal: No joint pain or stiffness
+- Neurological: Headaches and dizziness as described, no numbness or tingling
+- Psychiatric: Reports mild work-related stress, denies depression or anxiety
+
+PHYSICAL EXAMINATION:
+- Vital Signs: BP 138/88, HR 76, RR 16, Temp 98.6°F, O2 Sat 98%
+- General: Alert and oriented, in no acute distress
+- HEENT: Normocephalic, atraumatic, PERRL, EOMI, TMs normal, oropharynx clear
+- Neck: Supple, no lymphadenopathy, no thyromegaly
+- Cardiovascular: RRR, no murmurs, rubs, or gallops
+- Respiratory: Clear to auscultation bilaterally
+- Neurological: CN II-XII intact, normal gait, negative Romberg, DTRs 2+ and symmetric
+
+ASSESSMENT:
+1. Recurrent headaches - possibly tension-type vs. migraine
+2. Intermittent dizziness - possibly orthostatic vs. vestibular
+3. Hypertension - suboptimally controlled
+4. Hyperlipidemia - stable on current therapy
+
+PLAN:
+1. Headaches/Dizziness:
+   - Recommend headache diary to track frequency, severity, triggers
+   - Order CBC, CMP, TSH to rule out underlying causes
+   - Consider ophthalmology referral to rule out vision-related causes
+   - Trial of sumatriptan 50mg for suspected migrainous episodes
+   - Follow up in 4 weeks
+
+2. Hypertension:
+   - Increase lisinopril to 20mg daily
+   - Continue home BP monitoring
+   - Emphasize dietary sodium restriction
+
+3. Hyperlipidemia:
+   - Continue current atorvastatin dose
+   - Repeat lipid panel at next visit
+
+4. Lifestyle modifications:
+   - Discuss proper ergonomics for computer work
+   - Recommend stress reduction techniques
+   - Consider reducing caffeine intake
+   - Increase water intake to ensure adequate hydration

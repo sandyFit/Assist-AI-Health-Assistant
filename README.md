@@ -1,104 +1,114 @@
-**Assist** project for the TRAE AI IDE Hackathon:
+# 🏥 Assist — Your Friendly AI Companion for Diabetes Care
 
----
+**Assist** is a collaborative AI assistant that helps diabetes patients draft clear and medically informed therapy requests based on their symptoms, clinical history, and doctor recommendations.
 
-# 🩺 Assist — AI Health Assistant 
+It’s designed for fast prototyping (e.g., hackathons!) with no complex medical databases—just the power of LLMs and thoughtful human-in-the-loop review. 💡
 
-A guided AI-powered query and response flow for diabetes patient health support—ensuring clinical safety through a **doctor-in-the-loop** approach.
+## Features
 
----
+- Query enhancement using AI
+- Safety scoring for medical queries
+- Automated triage system
+- Doctor approval workflow
+- File upload and processing (.pdf, .csv, .txt)
+- Role-based access (Patient, Doctor, Admin)
 
-## 📌 Overview
+## Project Structure
 
-**Assist — AI Health Assistant** is a prototype system designed to streamline how diabetes patients ask health-related questions, receive guidance powered by AI, and ultimately get reviewed responses from licensed doctors.
-Built with **Streamlit** as the frontend interface, a **Langgraph AI assistant** as the reasoning engine, and [database pending selection] for secure data storage, the system supports traceability, privacy, and medical accountability.
+```
+/medical-assistant-app/
+├── app/                    # FastAPI backend
+│   ├── main.py            # FastAPI entrypoint
+│   ├── routes/            # API endpoints
+│   ├── models/            # Database models
+│   ├── db/                # Database connection
+│   ├── agents/            # AI agent scripts
+├── ui/                    # Streamlit frontend
+│   ├── streamlit_app.py   # Main UI
+│   ├── components/        # UI components
+├── tests/                 # Test files
+├── data/                  # Sample data
+├── docs/                  # Documentation
+├── mcp-flow.yaml          # MCP agent flow
+```
 
----
+## Setup Instructions
 
-## 🎯 Key Features
+### Prerequisites
 
-* 🧑‍⚕️ **Doctor-reviewed AI suggestions**
-* 🧾 **Support for lab result uploads (PDF/Image)**
-* 📜 **Conversation history and response logging**
-* 🔐 **Secure patient login and query submission**
-* ⚙️ **Seamless frontend–backend–database integration**
+- Python 3.9+
+- pip
 
----
+### Installation
 
-## 🧩 System Components
+1. Clone the repository
+2. Install dependencies:
+   ```
+   pip install -r requirements.txt
+   ```
+3. Set up environment variables (copy `.env.example` to `.env` and fill in values)
 
-| Component          | Description                                                              |
-| ------------------ | ------------------------------------------------------------------------ |
-| **Patient**        | End-user submitting health questions.                                    |
-| **Doctor**         | Healthcare provider reviewing and validating responses.                  |
-| **Frontend**       | Built with **Streamlit**, provides the UI for both patients and doctors. |
-| **System Backend** | Python with Langgraph flow for AI processing and decision logic.         |
-| **Database**       | The database stores patient data, history, queries, and responses securely. |
+### Running the Application
 
----
+1. Start the backend API:
+   ```
+   uvicorn app.main:app --reload
+   ```
+   The API will be available at http://localhost:8000
 
-## 🔄 Flow Summary
+2. Launch the Streamlit UI in a separate terminal:
+   ```
+   streamlit run ui/streamlit_app.py
+   ```
+   The UI will be available at http://localhost:8501
 
-1. **Patient Interaction:**
+3. Seed demo data (optional):
+   ```
+   python seed_db.py
+   ```
+   Alternatively, set the environment variable `SEED_DB=true` to automatically seed the database on startup.
 
-   * Logs in, submits a health query (optionally uploads lab results).
-   * Frontend sends data to backend → backend logs the query in the database.
+## API Documentation
 
-2. **AI Draft Phase:**
+Once the backend is running, you can access the Swagger documentation at:
+```
+http://localhost:8000/docs
+```
 
-   * Backend fetches patient history and processes the query using Langgraph.
-   * A draft response is generated and saved in the database.
+## Agent Strategy
 
-3. **Doctor Review:**
+This application uses multiple specialized AI agents:
 
-   * Doctor logs in, sees pending queries.
-   * Reviews and either **approves**, **edits**, or **rewrites** the AI response.
+1. **Query Enhancement Agent**: Improves user queries for better results
+2. **Safety Scoring Agent**: Evaluates medical advice for safety
+3. **Triage Agent**: Prioritizes queries based on urgency
+4. **Doctor Approval Agent**: Reviews AI responses before delivery
 
-4. **Final Response:**
+All agents operate within a coordinated MCP flow defined in `mcp-flow.yaml`.
 
-   * Approved response is delivered back to the patient.
-   * System logs all decisions and transitions for traceability.
+## Safety Rationale
 
----
+Medical advice requires careful handling. Our multi-agent approach ensures:
 
-## 🔐 Data Handling & Privacy
+- All responses are vetted for medical accuracy
+- Safety scores prevent potentially harmful advice
+- Doctor review for critical or uncertain cases
+- Clear labeling of AI-generated content
 
-* All data (queries, responses, lab files) are securely stored and linked to patient IDs.
-* Each step in the query-response cycle is logged in the database.
-* Doctors are the final decision-makers; as the project's name implies, AI only assists.
+## Demo Data
 
----
+The application includes sample data for demonstration purposes. Run `seed_db.py` to populate the database with mock queries, file records, and safety scores.
 
-## 🛠️ Tech Stack
+## Role-Based Access
 
-* **Frontend:** [Streamlit](https://streamlit.io)
-* **Backend:** Python, [Langgraph](https://www.langgraph.dev/)
-* **Database:** Pending selection (Firestore, Supabase, etc.)
-* **Cloud Storage:** Pending selection (AWS S3, Streamlit, etc.)
+The application supports three user roles:
 
----
+1. **Patient**: Can submit medical queries, upload files, and view responses
+2. **Doctor**: Can review and approve/reject AI-generated responses, update triage levels
+3. **Admin**: Has access to all features plus system monitoring
 
-## 👨‍⚕️ Roles & Contributors
+For the demo, role selection is available in the UI sidebar without authentication.
 
-| Role                   | Description                                             |
-|------------------------|---------------------------------------------------------|
-| **Frontend (UI/UX)**   | Patient/Doctor dashboards & interactions                |
-| **Backend/AI Logic**   | Langgraph pipeline, Firestore logic                     |
-| **Pitch/Story**        | Demo script, messaging, presentation                    |
-| **Docs & Setup**       | Repo setup, README, onboarding docs                     |
-| **Integrator + QA/Testing** | Glue the parts, test the flow, polish the demo     |
+## License
 
-
----
-
-## 📽️ Demo & Presentation
-
-> *Will include link to video presentation.*
-
----
-
-## 📄 License
-
-MIT License.
-
----
+This project is intended for demonstration purposes only.

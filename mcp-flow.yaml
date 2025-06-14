@@ -1,0 +1,136 @@
+# MCP Flow Configuration for Medical AI Assistant
+# This file defines the agent orchestration flow for processing medical queries
+
+name: medical-ai-assistant-flow
+version: 1.0.0
+description: |
+  Multi-agent flow for processing medical queries with safety checks,
+  triage, and doctor approval mechanisms.
+
+# Define the agents in the system
+agents:
+  - name: query-enhancer
+    description: Enhances user queries with medical terminology and context
+    implementation:
+      type: openai
+      model: gpt-4o
+      temperature: 0.2
+      system_prompt: |
+        You are a medical query enhancement agent. Your task is to reformulate patient queries 
+        into medically precise language that highlights key symptoms, relevant medical history, 
+        and potential concerns. Maintain all information from the original query while adding 
+        medical context and terminology that would be helpful for healthcare professionals.
+        
+        DO NOT diagnose the patient or suggest treatments. Your role is strictly to enhance 
+        the query for better processing by downstream medical AI systems.
+
+  - name: safety-scorer
+    description: Evaluates the safety risk of medical queries and responses
+    implementation:
+      type: openai
+      model: gpt-4o
+      temperature: 0.1
+      system_prompt: |
+        You are a medical safety evaluation agent. Your task is to analyze medical queries 
+        and responses to determine their safety risk level. Assign a safety score between 0.0 and 1.0, 
+        where:
+        
+        - 0.0-0.3: High risk (emergency symptoms, life-threatening conditions)
+        - 0.3-0.6: Medium risk (concerning symptoms requiring prompt attention)
+        - 0.6-0.8: Low risk (non-urgent medical concerns)
+        - 0.8-1.0: Minimal risk (general health questions, wellness advice)
+        
+        Focus on identifying red flag symptoms, emergency conditions, and situations where 
+        delayed medical care could lead to harm. Return only the numerical score.
+
+  - name: triage-agent
+    description: Determines the urgency level of medical queries
+    implementation:
+      type: openai
+      model: gpt-4o
+      temperature: 0.1
+      system_prompt: |
+        You are a medical triage agent. Your task is to determine the appropriate triage level 
+        for patient queries based on medical urgency. Assign one of the following triage levels:
+        
+        - URGENT: Requires immediate medical attention (potential emergencies)
+        - HIGH: Should be seen within 24 hours
+        - MEDIUM: Should be addressed within several days
+        - LOW: Routine medical question, can be addressed within 1-2 weeks
+        
+        Consider the query content, safety score (if provided), and potential risks of delayed care.
+        Return only the triage level as a single word: URGENT, HIGH, MEDIUM, or LOW.
+
+  - name: response-generator
+    description: Generates medical responses to patient queries
+    implementation:
+      type: openai
+      model: gpt-4o
+      temperature: 0.4
+      system_prompt: |
+        You are a medical response generation agent. Your task is to create informative, 
+        accurate, and helpful responses to patient medical queries. Follow these guidelines:
+        
+        1. Provide evidence-based information aligned with current medical consensus
+        2. Clearly indicate when medical attention is needed and with what urgency
+        3. Avoid definitive diagnoses - present possibilities with appropriate context
+        4. Include relevant lifestyle and preventive advice when appropriate
+        5. Use plain language accessible to patients while maintaining accuracy
+        6. Acknowledge limitations and encourage professional medical consultation
+        
+        Your response should be comprehensive but concise, focusing on the most relevant 
+        information for the patient's query.
+
+# Define the flow between agents
+flow:
+  - step: enhance-query
+    agent: query-enhancer
+    input:
+      query: "{{input.query_text}}"
+    output:
+      enhanced_query: "{{result}}"
+
+  - step: calculate-safety
+    agent: safety-scorer
+    input:
+      query: "{{input.query_text}}"
+      enhanced_query: "{{steps.enhance-query.enhanced_query}}"
+    output:
+      safety_score: "{{result}}"
+
+  - step: determine-triage
+    agent: triage-agent
+    input:
+      query: "{{input.query_text}}"
+      enhanced_query: "{{steps.enhance-query.enhanced_query}}"
+      safety_score: "{{steps.calculate-safety.safety_score}}"
+    output:
+      triage_level: "{{result}}"
+
+  - step: generate-response
+    agent: response-generator
+    condition: "{{steps.calculate-safety.safety_score >= 0.3 || steps.determine-triage.triage_level == 'LOW'}}"
+    input:
+      query: "{{input.query_text}}"
+      enhanced_query: "{{steps.enhance-query.enhanced_query}}"
+      safety_score: "{{steps.calculate-safety.safety_score}}"
+      triage_level: "{{steps.determine-triage.triage_level}}"
+      file_summaries: "{{input.file_summaries}}"
+    output:
+      response_text: "{{result}}"
+
+  - step: emergency-response
+    condition: "{{steps.calculate-safety.safety_score < 0.3 || steps.determine-triage.triage_level == 'URGENT'}}"
+    output:
+      response_text: |
+        MEDICAL ATTENTION ADVISED: Based on the information provided, this situation may require immediate medical attention. Please contact your healthcare provider, visit an urgent care facility, or call emergency services if symptoms are severe.
+        
+        This AI system is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
+
+# Define the output format
+output:
+  enhanced_query: "{{steps.enhance-query.enhanced_query}}"
+  safety_score: "{{steps.calculate-safety.safety_score}}"
+  triage_level: "{{steps.determine-triage.triage_level}}"
+  response_text: "{{steps.generate-response.response_text || steps.emergency-response.response_text}}"
+  requires_review: "{{steps.calculate-safety.safety_score < 0.6 || steps.determine-triage.triage_level == 'HIGH' || steps.determine-triage.triage_level == 'URGENT'}}"
